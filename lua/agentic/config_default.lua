@@ -1,4 +1,10 @@
---- @alias agentic.UserConfig.ProviderName "claude-acp" | "gemini-acp" | "codex-acp" | "opencode-acp" | "cursor-acp" | "auggie-acp"
+--- @alias agentic.UserConfig.ProviderName
+--- | "claude-acp"
+--- | "gemini-acp"
+--- | "codex-acp"
+--- | "opencode-acp"
+--- | "cursor-acp"
+--- | "auggie-acp"
 
 --- @alias agentic.UserConfig.HeaderRenderFn fun(parts: agentic.ui.ChatWidget.HeaderParts): string|nil
 
@@ -50,20 +56,14 @@ local ConfigDefault = {
         ["claude-acp"] = {
             name = "Claude ACP",
             command = "claude-code-acp",
-            env = {
-                NODE_NO_WARNINGS = "1",
-                IS_AI_TERMINAL = "1",
-            },
+            env = {},
         },
 
         ["gemini-acp"] = {
             name = "Gemini ACP",
             command = "gemini",
             args = { "--experimental-acp" },
-            env = {
-                NODE_NO_WARNINGS = "1",
-                IS_AI_TERMINAL = "1",
-            },
+            env = {},
         },
 
         ["codex-acp"] = {
@@ -75,30 +75,21 @@ local ConfigDefault = {
                 -- "-c",
                 -- "features.web_search_request=true", -- disabled as it doesn't send proper tool call messages
             },
-            env = {
-                NODE_NO_WARNINGS = "1",
-                IS_AI_TERMINAL = "1",
-            },
+            env = {},
         },
 
         ["opencode-acp"] = {
             name = "OpenCode ACP",
             command = "opencode",
             args = { "acp" },
-            env = {
-                NODE_NO_WARNINGS = "1",
-                IS_AI_TERMINAL = "1",
-            },
+            env = {},
         },
 
         ["cursor-acp"] = {
             name = "Cursor Agent ACP",
             command = "cursor-agent-acp",
             args = {},
-            env = {
-                NODE_NO_WARNINGS = "1",
-                IS_AI_TERMINAL = "1",
-            },
+            env = {},
         },
 
         ["auggie-acp"] = {
@@ -107,10 +98,7 @@ local ConfigDefault = {
             args = {
                 "--acp",
             },
-            env = {
-                NODE_NO_WARNINGS = "1",
-                IS_AI_TERMINAL = "1",
-            },
+            env = {},
         },
     },
 
