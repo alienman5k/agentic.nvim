@@ -62,6 +62,7 @@ interface, your colors, and your keymaps.
 - **ℹ️ Smart Context** - Automatically includes system and project information
   in the first message of each session, so the Agent don't spend time and tokens
   gathering basic info
+- **♻️ Session Restore** - Restore your session and chat history at any time, for all providers
 
 ## 🎥 Showcase
 
@@ -69,15 +70,35 @@ interface, your colors, and your keymaps.
 
 https://github.com/user-attachments/assets/4b33bb18-95f7-4fea-bc12-9a9208823911
 
+### Rich diff preview
+
+When editing files, if your provider asks for permission, you can see a diff preview side-by-side or inline, set your preference in your options: 
+
+| Side-by-side | Inline |
+| -------------- | ---------------------- |
+| <img width="1577" height="916" alt="image" src="https://github.com/user-attachments/assets/aef778af-815c-412b-a514-e3dec4280b6d" /> | <img width="1571" height="907" alt="image" src="https://github.com/user-attachments/assets/6f824ec9-023b-4cc4-aca6-647a6b191183" /> |
+
+
 ### Image and Screenshot support in the Chat
 
+Drag-n-Drop or paste an image from the Clipboard directly to the chat context:
+
 https://github.com/user-attachments/assets/6ae57136-9c08-4d71-bc8a-59babc49be4d
+
+### Session restoration
+
+Continue from where you left off, available for all providers!
+
+<img width="1274" height="716" alt="session-restore" src="https://github.com/user-attachments/assets/736c514a-003a-4984-89f5-0107ede259ce" />
+
 
 ### 🐣 NEW: Switch agent mode: Always ask, Accept Edits, Plan mode...
 
 https://github.com/user-attachments/assets/96a11aae-3095-46e7-86f1-ccc02d21c04f
 
 ### Add files to the context:
+
+Add the current file to the Chat context or the selected text, let your agent know where you want it to work. 
 
 https://github.com/user-attachments/assets/b6b43544-a91e-407f-834e-4b4de41259f8
 
