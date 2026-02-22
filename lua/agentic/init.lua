@@ -212,18 +212,20 @@ function Agentic.setup(opts)
     })
 
     if Config.image_paste.enabled then
-        require("agentic.ui.clipboard").setup({
-            is_widget_open = function()
-                local tab_page_id = vim.api.nvim_get_current_tabpage()
-                local session = SessionRegistry.sessions[tab_page_id]
-                if session then
-                    return session.widget:is_open()
-                end
-                return false
+        local function get_current_session()
+            local tab_page_id = vim.api.nvim_get_current_tabpage()
+            return SessionRegistry.sessions[tab_page_id]
+        end
+
+        local Clipboard = require("agentic.ui.clipboard")
+
+        Clipboard.setup({
+            is_cursor_in_widget = function()
+                local session = get_current_session()
+                return session and session.widget:is_cursor_in_widget() or false
             end,
             on_paste = function(file_path)
-                local tab_page_id = vim.api.nvim_get_current_tabpage()
-                local session = SessionRegistry.sessions[tab_page_id]
+                local session = get_current_session()
 
                 if not session then
                     return false

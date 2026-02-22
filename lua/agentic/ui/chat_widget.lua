@@ -57,6 +57,16 @@ function ChatWidget:is_open()
     return (win_id and vim.api.nvim_win_is_valid(win_id)) or false
 end
 
+--- Check if the cursor is currently in one of the widget's buffers
+--- @return boolean
+function ChatWidget:is_cursor_in_widget()
+    if not self:is_open() then
+        return false
+    end
+
+    return self:_is_widget_buffer(vim.api.nvim_get_current_buf())
+end
+
 --- @param opts agentic.ui.ChatWidget.ShowOpts|agentic.ui.ChatWidget.AddToContextOpts|nil
 function ChatWidget:show(opts)
     opts = opts or {}
