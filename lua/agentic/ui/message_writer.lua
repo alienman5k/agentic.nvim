@@ -720,8 +720,60 @@ function MessageWriter:_prepare_block_lines(tool_call_block)
             table.insert(lines, "```")
         end
     else
-        if tool_call_block.body then
-            vim.list_extend(lines, tool_call_block.body)
+        local body_lines = tool_call_block.body
+
+        if body_lines and #body_lines > 0 then
+            local output_config = Config.tool_call_output or {}
+            local mode = output_config.mode or "full"
+
+            if mode == "hidden" then
+                local indicator = string.format(
+                    "--- Output hidden (%d lines) ---",
+                    #body_lines
+                )
+
+                table.insert(lines, indicator)
+
+                --- @type agentic.ui.MessageWriter.HighlightRange
+                local range = {
+                    type = "comment",
+                    line_index = #lines - 1,
+                }
+
+                table.insert(highlight_ranges, range)
+            elseif mode == "truncate" then
+                local configured_max = tonumber(output_config.max_lines) or 0
+                if configured_max < 0 then
+                    configured_max = 0
+                end
+
+                local limit = math.min(configured_max, #body_lines)
+
+                if limit > 0 then
+                    for i = 1, limit do
+                        table.insert(lines, body_lines[i])
+                    end
+                end
+
+                if #body_lines > limit then
+                    local indicator = string.format(
+                        "--- Output truncated: %d lines hidden ---",
+                        #body_lines - limit
+                    )
+
+                    table.insert(lines, indicator)
+
+                    --- @type agentic.ui.MessageWriter.HighlightRange
+                    local range = {
+                        type = "comment",
+                        line_index = #lines - 1,
+                    }
+
+                    table.insert(highlight_ranges, range)
+                end
+            else
+                vim.list_extend(lines, body_lines)
+            end
         end
     end
 

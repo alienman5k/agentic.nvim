@@ -139,6 +139,11 @@
 --- @field layout "inline" | "split"
 --- @field center_on_navigate_hunks boolean
 
+--- Controls how tool call output bodies are rendered in the chat buffer
+--- @class agentic.UserConfig.ToolCallOutput
+--- @field mode "full"|"truncate"|"hidden"
+--- @field max_lines integer|nil
+
 --- @class agentic.UserConfig.Hooks
 --- @field on_prompt_submit? fun(data: agentic.UserConfig.PromptSubmitData): nil
 --- @field on_response_complete? fun(data: agentic.UserConfig.ResponseCompleteData): nil
@@ -164,6 +169,7 @@
 --- @field image_paste? agentic.UserConfig.ImagePaste
 --- @field auto_scroll? agentic.UserConfig.AutoScroll
 --- @field diff_preview? agentic.UserConfig.DiffPreview
+--- @field tool_call_output? agentic.UserConfig.ToolCallOutput
 --- @field hooks? agentic.UserConfig.Hooks
 --- @field headers? agentic.UserConfig.Headers
 --- @field settings? agentic.UserConfig.Settings
@@ -182,6 +188,7 @@
 --- @field image_paste agentic.UserConfig.ImagePaste
 --- @field auto_scroll agentic.UserConfig.AutoScroll
 --- @field diff_preview agentic.UserConfig.DiffPreview
+--- @field tool_call_output agentic.UserConfig.ToolCallOutput
 --- @field hooks agentic.UserConfig.Hooks
 --- @field headers agentic.UserConfig.Headers
 --- @field settings agentic.UserConfig.Settings
@@ -393,6 +400,11 @@ local ConfigDefault = {
         enabled = true,
         layout = "split",
         center_on_navigate_hunks = true,
+    },
+
+    tool_call_output = {
+        mode = "full",
+        max_lines = 200,
     },
 
     hooks = {

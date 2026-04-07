@@ -15,9 +15,12 @@ describe("agentic.ui.MessageWriter", function()
 
     --- @type agentic.UserConfig.AutoScroll|nil
     local original_auto_scroll
+    --- @type agentic.UserConfig.ToolCallOutput|nil
+    local original_tool_call_output
 
     before_each(function()
         original_auto_scroll = Config.auto_scroll
+        original_tool_call_output = Config.tool_call_output
         MessageWriter = require("agentic.ui.message_writer")
 
         bufnr = vim.api.nvim_create_buf(false, true)
@@ -36,6 +39,7 @@ describe("agentic.ui.MessageWriter", function()
 
     after_each(function()
         Config.auto_scroll = original_auto_scroll --- @diagnostic disable-line: assign-type-mismatch
+        Config.tool_call_output = original_tool_call_output --- @diagnostic disable-line: assign-type-mismatch
         if winid and vim.api.nvim_win_is_valid(winid) then
             vim.api.nvim_win_close(winid, true)
         end
@@ -470,6 +474,60 @@ describe("agentic.ui.MessageWriter", function()
             end, highlight_ranges)
             assert.is_true(#new_ranges > 0)
             assert.equal("inserted", new_ranges[1].new_line)
+        end)
+
+        it("replaces body with hidden indicator when mode is hidden", function()
+            Config.tool_call_output = {
+                mode = "hidden",
+            }
+
+            local block = make_tool_call_block("hidden-body", "pending", {
+                "line 1",
+                "line 2",
+            })
+
+            local lines, highlight_ranges = writer:_prepare_block_lines(block)
+
+            assert.is_false(vim.tbl_contains(lines, "line 1"))
+            assert.is_true(
+                vim.tbl_contains(lines, "--- Output hidden (2 lines) ---")
+            )
+
+            local comment_range = vim.tbl_filter(function(r)
+                return r.type == "comment"
+            end, highlight_ranges)
+            assert.is_true(#comment_range > 0)
+        end)
+
+        it("truncates body when mode is truncate", function()
+            Config.tool_call_output = {
+                mode = "truncate",
+                max_lines = 2,
+            }
+
+            local block = make_tool_call_block("truncate-body", "pending", {
+                "keep 1",
+                "keep 2",
+                "drop 3",
+                "drop 4",
+            })
+
+            local lines, highlight_ranges = writer:_prepare_block_lines(block)
+
+            assert.is_true(vim.tbl_contains(lines, "keep 1"))
+            assert.is_true(vim.tbl_contains(lines, "keep 2"))
+            assert.is_false(vim.tbl_contains(lines, "drop 3"))
+            assert.is_true(
+                vim.tbl_contains(
+                    lines,
+                    "--- Output truncated: 2 lines hidden ---"
+                )
+            )
+
+            local comment_range = vim.tbl_filter(function(r)
+                return r.type == "comment"
+            end, highlight_ranges)
+            assert.is_true(#comment_range > 0)
         end)
     end)
 
